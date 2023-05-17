@@ -2,7 +2,7 @@ import numpy as np
 from PIL import Image
 import os
 import cv2
-# 人脸数据路径
+# 顔データパス
 path = "/5_Project/Facerecognition/Facedata"
 
 recognizer = cv2.face.LBPHFaceRecognizer_create()
