@@ -1,25 +1,25 @@
 import numpy as np
 import cv2
 
-# 人脸识别分类器
+# 顔認識分類器
 faceCascade = cv2.CascadeClassifier("D:/OpenCV/opencv/"
                                      "sources/data/haarcascades/haarcascade_frontalface_default.xml")
 
-# 识别眼睛的分类器
+# 目認識分類器
 eyeCascade = cv2.CascadeClassifier("D:/OpenCV/opencv/"
                                      "sources/data/haarcascades/haarcascade_eye.xml")
 
-# 开启摄像头
+# カメラをオンにする。
 cap = cv2.VideoCapture(0)
 ok = True
 result = []
 while ok:
-    # 读取摄像头中的图像，ok为是否读取成功的判断参数
+    # カメラ内の画像を読み取る　okは読み取りが成功したかどうかの判定パラメータ。
     ok, img = cap.read()
-    # 转换成灰度图像
+    # グレースケール画像に変換する
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    # 人脸检测
+    # 顔検出
     faces = faceCascade.detectMultiScale(
         gray,
         scaleFactor=1.2,
@@ -27,17 +27,17 @@ while ok:
         minSize=(32, 32)
     )
 
-    # 在检测人脸的基础上检测眼睛
+    # 顔検出に基づいて目を検出する
     for (x, y, w, h) in faces:
         fac_gray = gray[y: (y+h), x: (x+w)]
         result = []
         eyes = eyeCascade.detectMultiScale(fac_gray, 1.3, 2)
 
-        # 眼睛坐标的换算，将相对位置换成绝对位置
+        # 目の座標の変換、相対位置から絶対位置への変更
         for (ex, ey, ew, eh) in eyes:
             result.append((x+ex, y+ey, ew, eh))
 
-    # 画矩形
+    # 四角形を描く
     for (x, y, w, h) in faces:
         cv2.rectangle(img, (x, y), (x+w, y+h), (255, 0, 0), 2)
 
